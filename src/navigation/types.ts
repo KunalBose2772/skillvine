@@ -9,7 +9,9 @@ export type AuthStackParamList = {
 
 export type AppTabParamList = {
   Home: undefined;
+  Courses: undefined;
   Explore: undefined;
+  Community: undefined;
   Profile: undefined;
 };
 

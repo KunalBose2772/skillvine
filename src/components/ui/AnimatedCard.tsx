@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, Pressable } from 'react-native';
 import { MotiView } from 'moti';
-import { Colors } from '../../theme/colors';
 import { Radius } from '../../theme/radius';
 import { Spacing } from '../../theme/spacing';
 import { Shadows } from '../../theme/shadows';
+import { useThemeStore } from '../../store/themeStore';
 
 interface AnimatedCardProps {
   children: React.ReactNode;
@@ -25,6 +25,8 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
   elevated = false,
   noPad = false,
 }) => {
+  const { colors } = useThemeStore();
+
   const cardContent = (
     <MotiView
       from={{ opacity: 0, translateY: 18, scale: 0.97 }}
@@ -37,7 +39,10 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
       }}
       style={[
         styles.card,
-        elevated && styles.elevated,
+        {
+          backgroundColor: elevated ? colors.surfaceElevated : colors.surface,
+          borderColor: colors.surfaceBorder,
+        },
         glow && Shadows.glowBlue,
         !noPad && styles.padded,
         style,
@@ -63,14 +68,9 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.surface,
     borderRadius: Radius.card,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
     overflow: 'hidden',
-  },
-  elevated: {
-    backgroundColor: Colors.surfaceElevated,
   },
   padded: {
     padding: Spacing.xl,

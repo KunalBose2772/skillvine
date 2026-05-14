@@ -7,12 +7,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MotiView } from 'moti';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Colors } from '../theme/colors';
 import { FontFamily, FontSize } from '../theme/typography';
 import { Spacing } from '../theme/spacing';
 import { Radius } from '../theme/radius';
@@ -20,6 +20,7 @@ import { GradientButton } from '../components/ui/GradientButton';
 import { AppText } from '../components/ui/AppText';
 import { AuthStackParamList } from '../navigation/types';
 import { useAuthStore } from '../store/authStore';
+import { useThemeStore } from '../store/themeStore';
 
 type Props = {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'>;
@@ -32,6 +33,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [focused, setFocused] = useState<'email' | 'password' | null>(null);
 
   const { login, isLoading } = useAuthStore();
+  const { isDark, colors } = useThemeStore();
 
   const handleLogin = async () => {
     if (!email || !password) return;
@@ -52,19 +54,20 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
       transition={{ type: 'spring', damping: 20, stiffness: 200, delay: field === 'email' ? 300 : 400 }}
       style={[
         styles.inputWrapper,
-        focused === field && styles.inputFocused,
+        { backgroundColor: colors.surfaceElevated, borderColor: colors.surfaceBorder },
+        focused === field && { borderColor: colors.primaryBlue },
       ]}
     >
       <Ionicons
         name={icon as any}
         size={20}
-        color={focused === field ? Colors.primaryBlue : Colors.textMuted}
+        color={focused === field ? colors.primaryBlue : colors.textMuted}
         style={styles.inputIcon}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: colors.textPrimary }]}
         placeholder={placeholder}
-        placeholderTextColor={Colors.textMuted}
+        placeholderTextColor={colors.textMuted}
         value={value}
         onChangeText={onChangeText}
         onFocus={() => setFocused(field)}
@@ -77,7 +80,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <Ionicons
             name={showPassword ? 'eye-off-outline' : 'eye-outline'}
             size={20}
-            color={Colors.textMuted}
+            color={colors.textMuted}
           />
         </TouchableOpacity>
       )}
@@ -86,7 +89,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.root}
+      style={[styles.root, { backgroundColor: colors.background }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
@@ -108,17 +111,14 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           transition={{ type: 'spring', damping: 18, stiffness: 200, delay: 100 }}
           style={styles.logoRow}
         >
-          <LinearGradient
-            colors={[Colors.gradientStart, Colors.gradientEnd]}
-            style={styles.logoIcon}
-          >
-            <AppText variant="h4" color={Colors.white} style={styles.logoLetter}>
-              S
-            </AppText>
-          </LinearGradient>
-          <AppText variant="h4" style={styles.logoText}>
-            Skill<AppText variant="h4" color={Colors.accentBlue}>Vine</AppText>
-          </AppText>
+          <Image
+            source={
+              isDark
+                ? require('../../assets/logo-dark.png')
+                : require('../../assets/logo-light.png')
+            }
+            style={styles.logoImage}
+          />
         </MotiView>
 
         {/* Heading */}
@@ -131,7 +131,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <AppText variant="h2" style={styles.heading}>
             Welcome back
           </AppText>
-          <AppText variant="subtitle" style={styles.sub}>
+          <AppText variant="subtitle" style={{ color: colors.textSecondary }}>
             Continue your learning journey
           </AppText>
         </MotiView>
@@ -144,9 +144,16 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           style={styles.socialRow}
         >
           {['logo-google', 'logo-apple'].map((icon, i) => (
-            <TouchableOpacity key={icon} style={styles.socialBtn} activeOpacity={0.8}>
-              <Ionicons name={icon as any} size={22} color={Colors.textPrimary} />
-              <AppText variant="bodySmall" style={styles.socialText}>
+            <TouchableOpacity
+              key={icon}
+              style={[
+                styles.socialBtn,
+                { backgroundColor: colors.surfaceElevated, borderColor: colors.surfaceBorder },
+              ]}
+              activeOpacity={0.8}
+            >
+              <Ionicons name={icon as any} size={22} color={colors.textPrimary} />
+              <AppText variant="bodySmall" style={{ color: colors.textPrimary, fontFamily: FontFamily.bodySemiBold }}>
                 {i === 0 ? 'Google' : 'Apple'}
               </AppText>
             </TouchableOpacity>
@@ -160,11 +167,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           transition={{ type: 'timing', duration: 400, delay: 280 }}
           style={styles.dividerRow}
         >
-          <View style={styles.dividerLine} />
-          <AppText variant="caption" style={styles.dividerText}>
+          <View style={[styles.dividerLine, { backgroundColor: colors.surfaceBorder }]} />
+          <AppText variant="caption" style={{ color: colors.textMuted }}>
             or continue with email
           </AppText>
-          <View style={styles.dividerLine} />
+          <View style={[styles.dividerLine, { backgroundColor: colors.surfaceBorder }]} />
         </MotiView>
 
         {/* Inputs */}
@@ -183,7 +190,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           style={styles.forgotRow}
         >
           <TouchableOpacity>
-            <AppText variant="bodySmall" color={Colors.primaryBlue}>
+            <AppText variant="bodySmall" color={colors.primaryBlue}>
               Forgot password?
             </AppText>
           </TouchableOpacity>
@@ -210,11 +217,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
           transition={{ type: 'timing', duration: 400, delay: 550 }}
           style={styles.signupRow}
         >
-          <AppText variant="bodySmall" color={Colors.textSecondary}>
+          <AppText variant="bodySmall" color={colors.textSecondary}>
             Don't have an account?{' '}
           </AppText>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <AppText variant="bodySmall" color={Colors.primaryBlue} style={styles.link}>
+            <AppText variant="bodySmall" color={colors.primaryBlue} style={styles.link}>
               Sign up free
             </AppText>
           </TouchableOpacity>
@@ -227,7 +234,6 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   scroll: { flex: 1 },
   content: {
@@ -248,21 +254,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing['2xl'],
   },
-  logoIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: Spacing.sm,
-  },
-  logoLetter: {
-    fontFamily: FontFamily.heading,
-    fontSize: 20,
-  },
-  logoText: {
-    fontFamily: FontFamily.heading,
-    fontSize: FontSize.xl,
+  logoImage: {
+    width: 160,
+    height: 48,
+    resizeMode: 'contain',
   },
   headingBlock: {
     marginBottom: Spacing['2xl'],
@@ -270,9 +265,6 @@ const styles = StyleSheet.create({
   heading: {
     marginBottom: Spacing.xs,
     letterSpacing: -0.5,
-  },
-  sub: {
-    color: Colors.textSecondary,
   },
   socialRow: {
     flexDirection: 'row',
@@ -287,13 +279,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     height: 52,
     borderRadius: Radius.button,
-    backgroundColor: Colors.surfaceElevated,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  socialText: {
-    color: Colors.textPrimary,
-    fontFamily: FontFamily.bodySemiBold,
   },
   dividerRow: {
     flexDirection: 'row',
@@ -304,24 +290,15 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: Colors.surfaceBorder,
-  },
-  dividerText: {
-    color: Colors.textMuted,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceElevated,
     borderRadius: Radius.input,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
     paddingHorizontal: Spacing.base,
     height: 56,
     marginBottom: Spacing.md,
-  },
-  inputFocused: {
-    borderColor: Colors.primaryBlue,
   },
   inputIcon: {
     marginRight: Spacing.sm,
@@ -330,7 +307,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: FontFamily.bodyRegular,
     fontSize: FontSize.base,
-    color: Colors.textPrimary,
   },
   forgotRow: {
     alignItems: 'flex-end',

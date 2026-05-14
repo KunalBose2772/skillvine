@@ -8,9 +8,9 @@ import {
   ListRenderItemInfo,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MotiView, MotiText } from 'moti';
+import { MotiView } from 'moti';
+import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Colors } from '../theme/colors';
 import { FontFamily, FontSize } from '../theme/typography';
 import { Spacing } from '../theme/spacing';
 import { Radius } from '../theme/radius';
@@ -19,6 +19,7 @@ import { AppText } from '../components/ui/AppText';
 import { ONBOARDING_SLIDES } from '../constants/onboarding';
 import { AuthStackParamList } from '../navigation/types';
 import { useOnboardingStore } from '../store/onboardingStore';
+import { useThemeStore } from '../store/themeStore';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,7 +28,9 @@ type Props = {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Onboarding'>;
 };
 
-const SlideItem: React.FC<{ item: SlideType; index: number }> = ({ item, index }) => {
+const SlideItem: React.FC<{ item: SlideType; index: number }> = ({ item }) => {
+  const { colors } = useThemeStore();
+
   return (
     <View style={styles.slide}>
       {/* Card */}
@@ -39,14 +42,14 @@ const SlideItem: React.FC<{ item: SlideType; index: number }> = ({ item, index }
       >
         <LinearGradient
           colors={[item.gradientColors[0] + '22', item.gradientColors[1] + '11']}
-          style={styles.cardBackground}
+          style={[styles.cardBackground, { borderColor: colors.surfaceBorder }]}
         >
           {/* Glow orb */}
           <LinearGradient
             colors={[item.accentColor + '60', 'transparent']}
             style={styles.glowOrb}
           />
-          {/* Emoji */}
+          {/* Icon */}
           <MotiView
             from={{ scale: 0.4, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -59,7 +62,7 @@ const SlideItem: React.FC<{ item: SlideType; index: number }> = ({ item, index }
               end={{ x: 1, y: 1 }}
               style={styles.emojiGradient}
             >
-              <MotiText style={styles.emoji}>{item.emoji}</MotiText>
+              <Ionicons name={item.icon as any} size={40} color="#FFFFFF" />
             </LinearGradient>
           </MotiView>
 
@@ -99,6 +102,7 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatRef = useRef<FlatList>(null);
   const { setHasSeenOnboarding } = useOnboardingStore();
+  const { colors } = useThemeStore();
 
   const handleNext = () => {
     if (activeIndex < ONBOARDING_SLIDES.length - 1) {
@@ -117,7 +121,7 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
   const isLast = activeIndex === ONBOARDING_SLIDES.length - 1;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FlatList
         ref={flatRef}
         data={ONBOARDING_SLIDES as unknown as SlideType[]}
@@ -149,7 +153,9 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
               transition={{ type: 'spring', damping: 18, stiffness: 250 }}
               style={[
                 styles.dotIndicator,
-                i === activeIndex ? styles.dotActive : styles.dotInactive,
+                i === activeIndex
+                  ? { backgroundColor: colors.primaryBlue }
+                  : { backgroundColor: colors.surfaceBorder },
               ]}
             />
           ))}
@@ -165,7 +171,7 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Skip */}
         <TouchableOpacity onPress={handleGetStarted} style={styles.skipBtn}>
-          <AppText variant="bodySmall" color={Colors.textMuted}>
+          <AppText variant="bodySmall" color={colors.textMuted}>
             Skip for now
           </AppText>
         </TouchableOpacity>
@@ -177,7 +183,6 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   slide: {
     width,
@@ -198,7 +203,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: Radius.card,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -220,9 +224,6 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  emoji: {
-    fontSize: 42,
   },
   tag: {
     borderWidth: 1,
@@ -255,12 +256,6 @@ const styles = StyleSheet.create({
   dotIndicator: {
     height: 8,
     borderRadius: Radius.full,
-  },
-  dotActive: {
-    backgroundColor: Colors.primaryBlue,
-  },
-  dotInactive: {
-    backgroundColor: Colors.surfaceBorder,
   },
   cta: {
     marginBottom: Spacing.md,

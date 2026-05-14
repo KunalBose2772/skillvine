@@ -14,6 +14,7 @@ interface AuthStore {
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  skipAuth: () => void;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -48,5 +49,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   logout: () => {
     set({ user: null, isAuthenticated: false });
+  },
+
+  skipAuth: () => {
+    set({
+      isAuthenticated: true,
+      user: { id: '1', name: 'Arjun', email: 'arjun@skillvine.com' },
+    });
   },
 }));

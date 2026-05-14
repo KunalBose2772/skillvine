@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { MotiView, MotiText } from 'moti';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Colors } from '../theme/colors';
 import { FontFamily, FontSize } from '../theme/typography';
 import { AuthStackParamList } from '../navigation/types';
+import { useThemeStore } from '../store/themeStore';
+import { useAuthStore } from '../store/authStore';
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,15 +15,18 @@ type Props = {
 };
 
 export const SplashScreen: React.FC<Props> = ({ navigation }) => {
+  const { isDark, colors } = useThemeStore();
+  const { skipAuth } = useAuthStore();
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Onboarding');
-    }, 2800);
+      skipAuth();
+    }, 1800);
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, [skipAuth]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Background glow */}
       <MotiView
         from={{ opacity: 0, scale: 0.5 }}
@@ -56,40 +60,14 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
         transition={{ type: 'spring', damping: 18, stiffness: 180, delay: 300 }}
         style={styles.logoContainer}
       >
-        {/* Icon mark */}
-        <MotiView
-          from={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', damping: 16, stiffness: 200, delay: 500 }}
-        >
-          <LinearGradient
-            colors={[Colors.gradientStart, Colors.gradientEnd]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.iconMark}
-          >
-            <MotiText
-              from={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ type: 'timing', duration: 400, delay: 800 }}
-              style={styles.iconLetter}
-            >
-              S
-            </MotiText>
-          </LinearGradient>
-        </MotiView>
-
-        {/* Wordmark */}
-        <MotiView
-          from={{ opacity: 0, translateX: -10 }}
-          animate={{ opacity: 1, translateX: 0 }}
-          transition={{ type: 'spring', damping: 20, stiffness: 200, delay: 700 }}
-          style={styles.wordmark}
-        >
-          <MotiText style={styles.wordmarkText}>
-            Skill<MotiText style={styles.wordmarkAccent}>Vine</MotiText>
-          </MotiText>
-        </MotiView>
+        <Image
+          source={
+            isDark
+              ? require('../../assets/logo-dark.png')
+              : require('../../assets/logo-light.png')
+          }
+          style={styles.logoImage}
+        />
       </MotiView>
 
       {/* Tagline */}
@@ -99,7 +77,9 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
         transition={{ type: 'timing', duration: 600, delay: 1100 }}
         style={styles.taglineContainer}
       >
-        <MotiText style={styles.tagline}>Grow every day.</MotiText>
+        <MotiText style={[styles.tagline, { color: colors.textSecondary }]}>
+          Grow every day.
+        </MotiText>
       </MotiView>
 
       {/* Bottom pulse dots */}
@@ -120,7 +100,11 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
               delay: i * 200,
               loop: true,
             }}
-            style={[styles.dot, i === 1 && styles.dotActive]}
+            style={[
+              styles.dot,
+              { backgroundColor: i === 1 ? colors.primaryBlue : colors.textMuted },
+              i === 1 && styles.dotActive,
+            ]}
           />
         ))}
       </MotiView>
@@ -131,7 +115,6 @@ export const SplashScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -152,35 +135,12 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
+    marginBottom: 10,
   },
-  iconMark: {
-    width: 72,
-    height: 72,
-    borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  iconLetter: {
-    fontFamily: FontFamily.heading,
-    fontSize: 36,
-    color: '#FFFFFF',
-    lineHeight: 42,
-  },
-  wordmark: {
-    flexDirection: 'row',
-  },
-  wordmarkText: {
-    fontFamily: FontFamily.heading,
-    fontSize: FontSize['3xl'],
-    color: Colors.textPrimary,
-    letterSpacing: -0.5,
-  },
-  wordmarkAccent: {
-    fontFamily: FontFamily.heading,
-    fontSize: FontSize['3xl'],
-    color: Colors.accentBlue,
-    letterSpacing: -0.5,
+  logoImage: {
+    width: 220,
+    height: 65,
+    resizeMode: 'contain',
   },
   taglineContainer: {
     marginTop: 14,
@@ -188,7 +148,6 @@ const styles = StyleSheet.create({
   tagline: {
     fontFamily: FontFamily.bodyRegular,
     fontSize: FontSize.base,
-    color: Colors.textSecondary,
     letterSpacing: 0.3,
   },
   dotsContainer: {
@@ -202,10 +161,8 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: Colors.textMuted,
   },
   dotActive: {
     width: 20,
-    backgroundColor: Colors.primaryBlue,
   },
 });

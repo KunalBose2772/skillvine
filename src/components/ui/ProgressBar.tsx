@@ -8,8 +8,8 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors } from '../../theme/colors';
 import { Radius } from '../../theme/radius';
+import { useThemeStore } from '../../store/themeStore';
 
 interface ProgressBarProps {
   progress: number; // 0 to 100
@@ -27,6 +27,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   showTrack = true,
 }) => {
   const width = useSharedValue(0);
+  const { colors } = useThemeStore();
 
   useEffect(() => {
     if (animated) {
@@ -50,13 +51,13 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     <View
       style={[
         showTrack && styles.track,
-        { height },
+        { backgroundColor: colors.surfaceBorder, height },
         style,
       ]}
     >
       <Animated.View style={[styles.fill, animatedStyle, { borderRadius: height / 2 }]}>
         <LinearGradient
-          colors={[Colors.gradientStart, Colors.gradientEnd]}
+          colors={[colors.gradientStart, colors.gradientEnd]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
@@ -68,7 +69,6 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
 
 const styles = StyleSheet.create({
   track: {
-    backgroundColor: Colors.surfaceBorder,
     borderRadius: Radius.full,
     overflow: 'hidden',
   },

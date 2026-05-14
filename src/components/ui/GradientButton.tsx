@@ -14,12 +14,12 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { Colors } from '../../theme/colors';
 import { Radius } from '../../theme/radius';
 import { Spacing } from '../../theme/spacing';
 import { Shadows } from '../../theme/shadows';
 import { AppText } from './AppText';
 import { FontFamily, FontSize } from '../../theme/typography';
+import { useThemeStore } from '../../store/themeStore';
 
 type ButtonVariant = 'primary' | 'outline' | 'ghost' | 'surface';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -52,6 +52,7 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
   fullWidth = true,
 }) => {
   const scale = useSharedValue(1);
+  const { colors } = useThemeStore();
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -97,13 +98,13 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
           style={styles.buttonBase}
         >
           <LinearGradient
-            colors={[Colors.gradientStart, Colors.gradientEnd]}
+            colors={[colors.gradientStart, colors.gradientEnd]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={[styles.gradient, sizeStyles[size], disabled && styles.disabled]}
           >
             {loading ? (
-              <ActivityIndicator color={Colors.white} size="small" />
+              <ActivityIndicator color={colors.white} size="small" />
             ) : (
               <View style={styles.content}>
                 {icon && <View style={styles.iconLeft}>{icon}</View>}
@@ -134,18 +135,17 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
           onPressOut={handlePressOut}
           disabled={disabled || loading}
           activeOpacity={0.9}
-          style={[styles.outlineButton, sizeStyles[size], disabled && styles.disabled]}
+          style={[styles.outlineButton, { borderColor: colors.primaryBlue }, sizeStyles[size], disabled && styles.disabled]}
         >
           {loading ? (
-            <ActivityIndicator color={Colors.primaryBlue} size="small" />
+            <ActivityIndicator color={colors.primaryBlue} size="small" />
           ) : (
             <View style={styles.content}>
               {icon && <View style={styles.iconLeft}>{icon}</View>}
               <AppText
                 variant="body"
                 style={[
-                  styles.outlineText,
-                  { fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold },
+                  { color: colors.primaryBlue, fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold },
                   textStyle,
                 ]}
               >
@@ -167,17 +167,22 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
           onPressOut={handlePressOut}
           disabled={disabled || loading}
           activeOpacity={0.85}
-          style={[styles.surfaceButton, sizeStyles[size], disabled && styles.disabled]}
+          style={[
+            styles.surfaceButton,
+            { backgroundColor: colors.surfaceElevated, borderColor: colors.surfaceBorder },
+            sizeStyles[size],
+            disabled && styles.disabled,
+          ]}
         >
           {loading ? (
-            <ActivityIndicator color={Colors.textPrimary} size="small" />
+            <ActivityIndicator color={colors.textPrimary} size="small" />
           ) : (
             <View style={styles.content}>
               {icon && <View style={styles.iconLeft}>{icon}</View>}
               <AppText
                 variant="body"
                 style={[
-                  { fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold, color: Colors.textPrimary },
+                  { fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold, color: colors.textPrimary },
                   textStyle,
                 ]}
               >
@@ -204,8 +209,7 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
         <AppText
           variant="body"
           style={[
-            styles.ghostText,
-            { fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold },
+            { color: colors.textSecondary, fontSize: textSizeStyles[size], fontFamily: FontFamily.bodySemiBold },
             textStyle,
           ]}
         >
@@ -231,33 +235,24 @@ const styles = StyleSheet.create({
   },
   iconLeft: { marginRight: Spacing.sm },
   primaryText: {
-    color: Colors.white,
+    color: '#FFFFFF',
     letterSpacing: 0.2,
   },
   outlineButton: {
     borderRadius: Radius.button,
     borderWidth: 1.5,
-    borderColor: Colors.primaryBlue,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  outlineText: {
-    color: Colors.primaryBlue,
-  },
   surfaceButton: {
     borderRadius: Radius.button,
-    backgroundColor: Colors.surfaceElevated,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
     alignItems: 'center',
     justifyContent: 'center',
   },
   ghostButton: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  ghostText: {
-    color: Colors.textSecondary,
   },
   disabled: {
     opacity: 0.5,

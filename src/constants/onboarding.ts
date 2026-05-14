@@ -1,7 +1,7 @@
 export const ONBOARDING_SLIDES = [
   {
     id: 1,
-    emoji: '⚡',
+    icon: 'flash-outline',
     tag: 'LEARN FAST',
     headline: 'Master skills\nin record time',
     subtext:
@@ -11,7 +11,7 @@ export const ONBOARDING_SLIDES = [
   },
   {
     id: 2,
-    emoji: '🎯',
+    icon: 'compass-outline',
     tag: 'PERSONALIZED',
     headline: 'Your path,\nyour goals',
     subtext:
@@ -21,7 +21,7 @@ export const ONBOARDING_SLIDES = [
   },
   {
     id: 3,
-    emoji: '🚀',
+    icon: 'rocket-outline',
     tag: 'GROW DAILY',
     headline: 'From curious\nto certified',
     subtext:
