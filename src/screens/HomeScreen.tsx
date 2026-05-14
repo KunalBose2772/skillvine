@@ -261,51 +261,64 @@ export const HomeScreen: React.FC = () => {
             >
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.heroQuickLinksScroll}>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                    <Ionicons name="play" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>Resume</AppText>
-                  <AppText variant="badge" style={styles.qlSub}>Last lesson</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(56, 189, 248, 0.2)' }]}>
+                    <Ionicons name="play" size={18} color="#38BDF8" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>Resume</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>Last lesson</AppText>
+                  </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                    <Ionicons name="star" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>Bookmarks</AppText>
-                  <AppText variant="badge" style={styles.qlSub}>8 Saved</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(245, 158, 11, 0.2)' }]}>
+                    <Ionicons name="star" size={18} color="#F59E0B" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>Bookmarks</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>8 Saved</AppText>
+                  </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                    <Ionicons name="download-outline" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>Downloads</AppText>
-                  <AppText variant="badge" style={styles.qlSub}>12 Lessons</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(16, 185, 129, 0.2)' }]}>
+                    <Ionicons name="download-outline" size={18} color="#10B981" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>Downloads</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>12 Lessons</AppText>
+                  </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                    <Ionicons name="document-text-outline" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>Notes</AppText>
-                  <AppText variant="badge" style={styles.qlSub}>23 Notes</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(168, 85, 247, 0.2)' }]}>
+                    <Ionicons name="document-text-outline" size={18} color="#A855F7" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>Notes</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>23 Notes</AppText>
+                  </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                    <Ionicons name="ribbon-outline" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>Achievements</AppText>
-                  <AppText variant="badge" style={styles.qlSub}>18 Badges</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(236, 72, 153, 0.2)' }]}>
+                    <Ionicons name="ribbon-outline" size={18} color="#EC4899" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>Achievements</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>18 Badges</AppText>
+                  </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.qlItem}>
-                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={[styles.qlIconBox, { borderRadius: 16 }]}>
-                    <Ionicons name="grid-outline" size={24} color="#FFF" />
-                  </LinearGradient>
-                  <AppText variant="caption" style={styles.qlTitle}>All Tools</AppText>
+                <TouchableOpacity style={styles.qlPillCard} activeOpacity={0.8}>
+                  <View style={[styles.qlPillIconBox, { backgroundColor: 'rgba(99, 102, 241, 0.2)' }]}>
+                    <Ionicons name="grid-outline" size={18} color="#6366F1" />
+                  </View>
+                  <View style={styles.qlPillTextCol}>
+                    <AppText variant="bodySmall" style={styles.qlPillTitle}>All Tools</AppText>
+                    <AppText variant="caption" style={styles.qlPillSub}>Explore all</AppText>
+                  </View>
                 </TouchableOpacity>
 
               </ScrollView>
@@ -788,38 +801,38 @@ const styles = StyleSheet.create({
   },
   heroQuickLinksScroll: {
     paddingHorizontal: Spacing.xl,
-    gap: 16,
+    gap: 12,
   },
-  qlItem: {
+  qlPillCard: {
+    flexDirection: 'row',
     alignItems: 'center',
-    width: 64, // Slightly tighter on Android
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: Radius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
   },
-  qlIconBox: {
-    width: 52,
-    height: 52,
-    borderRadius: 18,
+  qlPillIconBox: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
+    marginRight: 10,
   },
-  qlTitle: {
+  qlPillTextCol: {
+    justifyContent: 'center',
+  },
+  qlPillTitle: {
     color: '#FFF',
-    fontSize: 10,
     fontFamily: FontFamily.bodySemiBold,
-    textAlign: 'center',
+    fontSize: 13,
+    marginBottom: 1,
   },
-  qlSub: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: 8,
-    textAlign: 'center',
-    marginTop: 2,
+  qlPillSub: {
+    color: 'rgba(255,255,255,0.65)',
+    fontSize: 10,
   },
   section: { marginBottom: Spacing['2xl'] },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', paddingHorizontal: Spacing.xl, marginBottom: Spacing.lg },
