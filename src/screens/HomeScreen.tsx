@@ -21,7 +21,7 @@ import { useThemeStore } from '../store/themeStore';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -29,6 +29,8 @@ export const HomeScreen: React.FC = () => {
   const { user } = useAuthStore();
   const { isDark, colors, toggleTheme } = useThemeStore();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768;
 
   React.useEffect(() => {
     if (Platform.OS === 'android') {
@@ -71,7 +73,16 @@ export const HomeScreen: React.FC = () => {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <StatusBar style="light" />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scrollContent, { paddingBottom: Math.max(110, 110 + insets.bottom) }]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingBottom: isTablet ? Math.max(insets.bottom, 20) : Math.max(110, 110 + insets.bottom),
+            paddingLeft: isTablet ? 90 : 0, // Leaves perfect space for the Navigation Rail on tablets!
+          },
+        ]}
+      >
         {/* --- BRAND NEW HERO SECTION (PURPLE GRADIENT WITH CURVE) --- */}
         <LinearGradient
           colors={['#5b21b6', '#3b0764']}
@@ -79,7 +90,7 @@ export const HomeScreen: React.FC = () => {
           end={{ x: 1, y: 1 }}
           style={[styles.heroGradient, { paddingTop: Math.max(insets.top, 20) + 10 }]}
         >
-          <View style={styles.tabletContainer}>
+          <View style={{ paddingHorizontal: isTablet ? 32 : 0 }}>
             {/* Top Bar */}
             <MotiView
               from={{ opacity: 0, translateY: -10 }}
@@ -128,9 +139,15 @@ export const HomeScreen: React.FC = () => {
                   Good morning, {user?.name || 'Arjun'} 👋
                 </AppText>
 
-                <AppText variant="h1" style={styles.heroHeadline}>
+                <AppText
+                  variant="h1"
+                  style={[
+                    styles.heroHeadline,
+                    isTablet && { fontSize: 36, lineHeight: 44 }, // Expanded typography for tablet split-screen header
+                  ]}
+                >
                   Let's learn{'\n'}something amazing{'\n'}
-                  <AppText variant="h1" style={{ color: '#FCD34D' }}>today!</AppText>
+                  <AppText variant="h1" style={[{ color: '#FCD34D' }, isTablet && { fontSize: 36, lineHeight: 44 }]}>today!</AppText>
                 </AppText>
 
                 <TouchableOpacity style={styles.heroStreakPill} activeOpacity={0.8}>
@@ -243,7 +260,7 @@ export const HomeScreen: React.FC = () => {
           </View>
         </LinearGradient>
 
-        <View style={styles.tabletContainer}>
+        <View style={{ paddingHorizontal: isTablet ? 32 : 0 }}>
           {/* Explore by Category */}
         <MotiView
           from={{ opacity: 0 }}
@@ -258,36 +275,69 @@ export const HomeScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hScroll}>
-            {CATEGORIES.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                style={[
-                  styles.categoryCard,
-                  { backgroundColor: item.active ? colors.primaryBlue : colors.surface },
-                  !item.active && { borderColor: colors.surfaceBorder, borderWidth: 1 },
-                ]}
-                activeOpacity={0.8}
-              >
-                <Ionicons
-                  name={item.icon as any}
-                  size={24}
-                  color={item.active ? '#FFFFFF' : colors.textPrimary}
-                  style={styles.categoryIcon}
-                />
-                <AppText
-                  variant="bodySmall"
+          {isTablet ? (
+            <View style={styles.gridContainer}>
+              {CATEGORIES.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
                   style={[
-                    styles.categoryText,
-                    { color: item.active ? '#FFFFFF' : colors.textPrimary },
-                    item.active && { fontFamily: FontFamily.bodySemiBold },
+                    styles.categoryCard,
+                    { backgroundColor: item.active ? colors.primaryBlue : colors.surface },
+                    !item.active && { borderColor: colors.surfaceBorder, borderWidth: 1 },
                   ]}
+                  activeOpacity={0.8}
                 >
-                  {item.title}
-                </AppText>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                  <Ionicons
+                    name={item.icon as any}
+                    size={24}
+                    color={item.active ? '#FFFFFF' : colors.textPrimary}
+                    style={styles.categoryIcon}
+                  />
+                  <AppText
+                    variant="bodySmall"
+                    style={[
+                      styles.categoryText,
+                      { color: item.active ? '#FFFFFF' : colors.textPrimary },
+                      item.active && { fontFamily: FontFamily.bodySemiBold },
+                    ]}
+                  >
+                    {item.title}
+                  </AppText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hScroll}>
+              {CATEGORIES.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={[
+                    styles.categoryCard,
+                    { backgroundColor: item.active ? colors.primaryBlue : colors.surface },
+                    !item.active && { borderColor: colors.surfaceBorder, borderWidth: 1 },
+                  ]}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons
+                    name={item.icon as any}
+                    size={24}
+                    color={item.active ? '#FFFFFF' : colors.textPrimary}
+                    style={styles.categoryIcon}
+                  />
+                  <AppText
+                    variant="bodySmall"
+                    style={[
+                      styles.categoryText,
+                      { color: item.active ? '#FFFFFF' : colors.textPrimary },
+                      item.active && { fontFamily: FontFamily.bodySemiBold },
+                    ]}
+                  >
+                    {item.title}
+                  </AppText>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
         </MotiView>
 
         {/* Continue Learning Wide Card */}
@@ -346,36 +396,69 @@ export const HomeScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hScroll}>
-            {RECOMMENDED.map((item) => (
-              <View key={item.id} style={[styles.recCard, { backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}>
-                <LinearGradient colors={item.gradient} style={styles.recBanner}>
-                  <View style={styles.recTopRow}>
-                    <View style={[styles.badgePill, { backgroundColor: item.badgeBg }]}>
-                      <AppText variant="badge" style={styles.badgePillText}>{item.badge}</AppText>
+          {isTablet ? (
+            <View style={styles.gridContainer}>
+              {RECOMMENDED.map((item) => (
+                <View key={item.id} style={[styles.recCard, { width: 280, backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}>
+                  <LinearGradient colors={item.gradient} style={styles.recBanner}>
+                    <View style={styles.recTopRow}>
+                      <View style={[styles.badgePill, { backgroundColor: item.badgeBg }]}>
+                        <AppText variant="badge" style={styles.badgePillText}>{item.badge}</AppText>
+                      </View>
+                      <TouchableOpacity style={styles.bookmarkBtn}>
+                        <Ionicons name="bookmark-outline" size={18} color="#FFFFFF" />
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.bookmarkBtn}>
-                      <Ionicons name="bookmark-outline" size={18} color="#FFFFFF" />
-                    </TouchableOpacity>
-                  </View>
 
-                  <View style={styles.centerIconBox}>
-                    <Ionicons name="code-slash" size={44} color={item.iconColor} />
-                  </View>
-                </LinearGradient>
+                    <View style={styles.centerIconBox}>
+                      <Ionicons name="code-slash" size={44} color={item.iconColor} />
+                    </View>
+                  </LinearGradient>
 
-                <View style={styles.recInfo}>
-                  <AppText variant="body" style={styles.recTitle}>{item.title}</AppText>
-                  <AppText variant="caption" style={styles.recSub}>{item.subtitle}</AppText>
+                  <View style={styles.recInfo}>
+                    <AppText variant="body" style={styles.recTitle}>{item.title}</AppText>
+                    <AppText variant="caption" style={styles.recSub}>{item.subtitle}</AppText>
 
-                  <View style={styles.ratingRow}>
-                    <Ionicons name="star" size={14} color="#F59E0B" style={{ marginRight: 4 }} />
-                    <AppText variant="caption" style={styles.ratingText}>{item.rating}</AppText>
+                    <View style={styles.ratingRow}>
+                      <Ionicons name="star" size={14} color="#F59E0B" style={{ marginRight: 4 }} />
+                      <AppText variant="caption" style={styles.ratingText}>{item.rating}</AppText>
+                    </View>
                   </View>
                 </View>
-              </View>
-            ))}
-          </ScrollView>
+              ))}
+            </View>
+          ) : (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hScroll}>
+              {RECOMMENDED.map((item) => (
+                <View key={item.id} style={[styles.recCard, { width: width * 0.65, backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}>
+                  <LinearGradient colors={item.gradient} style={styles.recBanner}>
+                    <View style={styles.recTopRow}>
+                      <View style={[styles.badgePill, { backgroundColor: item.badgeBg }]}>
+                        <AppText variant="badge" style={styles.badgePillText}>{item.badge}</AppText>
+                      </View>
+                      <TouchableOpacity style={styles.bookmarkBtn}>
+                        <Ionicons name="bookmark-outline" size={18} color="#FFFFFF" />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.centerIconBox}>
+                      <Ionicons name="code-slash" size={44} color={item.iconColor} />
+                    </View>
+                  </LinearGradient>
+
+                  <View style={styles.recInfo}>
+                    <AppText variant="body" style={styles.recTitle}>{item.title}</AppText>
+                    <AppText variant="caption" style={styles.recSub}>{item.subtitle}</AppText>
+
+                    <View style={styles.ratingRow}>
+                      <Ionicons name="star" size={14} color="#F59E0B" style={{ marginRight: 4 }} />
+                      <AppText variant="caption" style={styles.ratingText}>{item.rating}</AppText>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          )}
         </MotiView>
         </View>
       </ScrollView>
@@ -649,6 +732,12 @@ const styles = StyleSheet.create({
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', paddingHorizontal: Spacing.xl, marginBottom: Spacing.lg },
   sectionTitle: { fontSize: 18, letterSpacing: -0.3 },
   hScroll: { paddingHorizontal: Spacing.xl, gap: Spacing.md },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: Spacing.xl,
+    gap: Spacing.md,
+  },
   categoryCard: {
     width: 105,
     height: 105,
