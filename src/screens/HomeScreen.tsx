@@ -79,169 +79,172 @@ export const HomeScreen: React.FC = () => {
           end={{ x: 1, y: 1 }}
           style={[styles.heroGradient, { paddingTop: Math.max(insets.top, 20) + 10 }]}
         >
-          {/* Top Bar */}
-          <MotiView
-            from={{ opacity: 0, translateY: -10 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ type: 'timing', duration: 400 }}
-            style={styles.heroTopBar}
-          >
-            <Image
-              source={require('../../assets/logo-dark.png')}
-              style={styles.heroLogoImage}
-            />
-
-            <View style={styles.heroTopActions}>
-              <TouchableOpacity
-                style={styles.themeBtn}
-                onPress={toggleTheme}
-                activeOpacity={0.8}
-              >
-                <Ionicons
-                  name={isDark ? 'sunny-outline' : 'moon-outline'}
-                  size={20}
-                  color="#FFF"
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.heroBellBtn} activeOpacity={0.8}>
-                <Ionicons name="notifications-outline" size={24} color="#FFF" />
-                <View style={styles.heroBadge}>
-                  <AppText variant="badge" style={styles.heroBadgeText}>3</AppText>
-                </View>
-              </TouchableOpacity>
-              <Image source={require('../../assets/user_avatar.png')} style={styles.heroAvatar} />
-            </View>
-          </MotiView>
-
-          {/* Main Hero Area */}
-          <MotiView
-            from={{ opacity: 0, translateY: -5 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ type: 'timing', duration: 400, delay: 100 }}
-            style={styles.heroMainContent}
-          >
-            {/* Left Content */}
-            <View style={styles.heroLeftCol}>
-              <AppText variant="bodySmall" style={styles.heroGreeting}>
-                Good morning, {user?.name || 'Arjun'} 👋
-              </AppText>
-
-              <AppText variant="h1" style={styles.heroHeadline}>
-                Let's learn{'\n'}something amazing{'\n'}
-                <AppText variant="h1" style={{ color: '#FCD34D' }}>today!</AppText>
-              </AppText>
-
-              <TouchableOpacity style={styles.heroStreakPill} activeOpacity={0.8}>
-                <View style={styles.heroStreakIconBox}>
-                  <Ionicons name="flame" size={12} color="#FF8A00" />
-                </View>
-                <AppText variant="bodySmall" style={styles.heroStreakText}>12 Day Streak</AppText>
-                <Ionicons name="chevron-forward" size={12} color="rgba(255,255,255,0.6)" />
-              </TouchableOpacity>
-            </View>
-          </MotiView>
-
-          {/* Search Bar & Avatar */}
-          <MotiView
-            from={{ opacity: 0, translateY: 10 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ type: 'timing', duration: 400, delay: 150 }}
-            style={styles.heroSearchSection}
-          >
-            {/* Right Graphics perfectly anchored to the search box */}
-            <Image
-              source={require('../../assets/hero_student.png')}
-              style={styles.heroStudentImage}
-            />
-
-            {/* Progress Circle moved here to stick near the student! */}
-            <View style={styles.heroProgressWidget}>
-              <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.05)']} style={styles.heroProgressInner}>
-                <View style={styles.heroProgressCircleBg} />
-                <View style={styles.heroProgressCircleValue} />
-                <View style={styles.heroProgressTextContainer}>
-                  <AppText variant="h3" style={styles.heroProgressPercent}>72%</AppText>
-                  <AppText variant="caption" style={styles.heroProgressLabel}>Weekly Goal</AppText>
-                </View>
-              </LinearGradient>
-            </View>
-
-            <View style={styles.heroSearchBox}>
-              <Ionicons name="search" size={20} color="rgba(255,255,255,0.6)" />
-              <TextInput
-                placeholder="Search for courses, skills, topics..."
-                placeholderTextColor="rgba(255,255,255,0.6)"
-                style={styles.heroSearchInput}
+          <View style={styles.tabletContainer}>
+            {/* Top Bar */}
+            <MotiView
+              from={{ opacity: 0, translateY: -10 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ type: 'timing', duration: 400 }}
+              style={styles.heroTopBar}
+            >
+              <Image
+                source={require('../../assets/logo-dark.png')}
+                style={styles.heroLogoImage}
               />
-              <View style={styles.heroSearchDivider} />
-              <TouchableOpacity>
-                <Ionicons name="options-outline" size={20} color="#FFF" />
-              </TouchableOpacity>
-            </View>
-          </MotiView>
 
-          {/* Quick Links */}
-          <MotiView
-            from={{ opacity: 0, translateY: 10 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ type: 'timing', duration: 400, delay: 200 }}
-            style={styles.heroQuickLinksSection}
-          >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.heroQuickLinksScroll}>
+              <View style={styles.heroTopActions}>
+                <TouchableOpacity
+                  style={styles.themeBtn}
+                  onPress={toggleTheme}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons
+                    name={isDark ? 'sunny-outline' : 'moon-outline'}
+                    size={20}
+                    color="#FFF"
+                  />
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                  <Ionicons name="play" size={24} color="#FFF" />
+                <TouchableOpacity style={styles.heroBellBtn} activeOpacity={0.8}>
+                  <Ionicons name="notifications-outline" size={24} color="#FFF" />
+                  <View style={styles.heroBadge}>
+                    <AppText variant="badge" style={styles.heroBadgeText}>3</AppText>
+                  </View>
+                </TouchableOpacity>
+                <Image source={require('../../assets/user_avatar.png')} style={styles.heroAvatar} />
+              </View>
+            </MotiView>
+
+            {/* Main Hero Area */}
+            <MotiView
+              from={{ opacity: 0, translateY: -5 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ type: 'timing', duration: 400, delay: 100 }}
+              style={styles.heroMainContent}
+            >
+              {/* Left Content */}
+              <View style={styles.heroLeftCol}>
+                <AppText variant="bodySmall" style={styles.heroGreeting}>
+                  Good morning, {user?.name || 'Arjun'} 👋
+                </AppText>
+
+                <AppText variant="h1" style={styles.heroHeadline}>
+                  Let's learn{'\n'}something amazing{'\n'}
+                  <AppText variant="h1" style={{ color: '#FCD34D' }}>today!</AppText>
+                </AppText>
+
+                <TouchableOpacity style={styles.heroStreakPill} activeOpacity={0.8}>
+                  <View style={styles.heroStreakIconBox}>
+                    <Ionicons name="flame" size={12} color="#FF8A00" />
+                  </View>
+                  <AppText variant="bodySmall" style={styles.heroStreakText}>12 Day Streak</AppText>
+                  <Ionicons name="chevron-forward" size={12} color="rgba(255,255,255,0.6)" />
+                </TouchableOpacity>
+              </View>
+            </MotiView>
+
+            {/* Search Bar & Avatar */}
+            <MotiView
+              from={{ opacity: 0, translateY: 10 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ type: 'timing', duration: 400, delay: 150 }}
+              style={styles.heroSearchSection}
+            >
+              {/* Right Graphics perfectly anchored to the search box */}
+              <Image
+                source={require('../../assets/hero_student.png')}
+                style={styles.heroStudentImage}
+              />
+
+              {/* Progress Circle moved here to stick near the student! */}
+              <View style={styles.heroProgressWidget}>
+                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.05)']} style={styles.heroProgressInner}>
+                  <View style={styles.heroProgressCircleBg} />
+                  <View style={styles.heroProgressCircleValue} />
+                  <View style={styles.heroProgressTextContainer}>
+                    <AppText variant="h3" style={styles.heroProgressPercent}>72%</AppText>
+                    <AppText variant="caption" style={styles.heroProgressLabel}>Weekly Goal</AppText>
+                  </View>
                 </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>Resume</AppText>
-                <AppText variant="badge" style={styles.qlSub}>Last lesson</AppText>
-              </TouchableOpacity>
+              </View>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                  <Ionicons name="star" size={24} color="#FFF" />
-                </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>Bookmarks</AppText>
-                <AppText variant="badge" style={styles.qlSub}>8 Saved</AppText>
-              </TouchableOpacity>
+              <View style={styles.heroSearchBox}>
+                <Ionicons name="search" size={20} color="rgba(255,255,255,0.6)" />
+                <TextInput
+                  placeholder="Search for courses, skills, topics..."
+                  placeholderTextColor="rgba(255,255,255,0.6)"
+                  style={styles.heroSearchInput}
+                />
+                <View style={styles.heroSearchDivider} />
+                <TouchableOpacity>
+                  <Ionicons name="options-outline" size={20} color="#FFF" />
+                </TouchableOpacity>
+              </View>
+            </MotiView>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                  <Ionicons name="download-outline" size={24} color="#FFF" />
-                </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>Downloads</AppText>
-                <AppText variant="badge" style={styles.qlSub}>12 Lessons</AppText>
-              </TouchableOpacity>
+            {/* Quick Links */}
+            <MotiView
+              from={{ opacity: 0, translateY: 10 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ type: 'timing', duration: 400, delay: 200 }}
+              style={styles.heroQuickLinksSection}
+            >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.heroQuickLinksScroll}>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                  <Ionicons name="document-text-outline" size={24} color="#FFF" />
-                </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>Notes</AppText>
-                <AppText variant="badge" style={styles.qlSub}>23 Notes</AppText>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
+                    <Ionicons name="play" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>Resume</AppText>
+                  <AppText variant="badge" style={styles.qlSub}>Last lesson</AppText>
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
-                  <Ionicons name="ribbon-outline" size={24} color="#FFF" />
-                </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>Achievements</AppText>
-                <AppText variant="badge" style={styles.qlSub}>18 Badges</AppText>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
+                    <Ionicons name="star" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>Bookmarks</AppText>
+                  <AppText variant="badge" style={styles.qlSub}>8 Saved</AppText>
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.qlItem}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={[styles.qlIconBox, { borderRadius: 16 }]}>
-                  <Ionicons name="grid-outline" size={24} color="#FFF" />
-                </LinearGradient>
-                <AppText variant="caption" style={styles.qlTitle}>All Tools</AppText>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
+                    <Ionicons name="download-outline" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>Downloads</AppText>
+                  <AppText variant="badge" style={styles.qlSub}>12 Lessons</AppText>
+                </TouchableOpacity>
 
-            </ScrollView>
-          </MotiView>
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
+                    <Ionicons name="document-text-outline" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>Notes</AppText>
+                  <AppText variant="badge" style={styles.qlSub}>23 Notes</AppText>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={styles.qlIconBox}>
+                    <Ionicons name="ribbon-outline" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>Achievements</AppText>
+                  <AppText variant="badge" style={styles.qlSub}>18 Badges</AppText>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.qlItem}>
+                  <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.02)']} style={[styles.qlIconBox, { borderRadius: 16 }]}>
+                    <Ionicons name="grid-outline" size={24} color="#FFF" />
+                  </LinearGradient>
+                  <AppText variant="caption" style={styles.qlTitle}>All Tools</AppText>
+                </TouchableOpacity>
+
+              </ScrollView>
+            </MotiView>
+          </View>
         </LinearGradient>
 
-        {/* Explore by Category */}
+        <View style={styles.tabletContainer}>
+          {/* Explore by Category */}
         <MotiView
           from={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -374,6 +377,7 @@ export const HomeScreen: React.FC = () => {
             ))}
           </ScrollView>
         </MotiView>
+        </View>
       </ScrollView>
     </View>
   );
@@ -382,6 +386,11 @@ export const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scrollContent: { paddingBottom: 110 },
+  tabletContainer: {
+    width: '100%',
+    maxWidth: 680,
+    alignSelf: 'center',
+  },
   heroGradient: {
     paddingBottom: 40,
     borderBottomLeftRadius: 40,
