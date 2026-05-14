@@ -100,7 +100,7 @@ export const HomeScreen: React.FC = () => {
             >
               <Image
                 source={require('../../assets/logo-dark.png')}
-                style={styles.heroLogoImage}
+                style={[styles.heroLogoImage, isTablet && { width: 160, height: 46 }]}
               />
 
               <View style={styles.heroTopActions}>
@@ -126,78 +126,131 @@ export const HomeScreen: React.FC = () => {
               </View>
             </MotiView>
 
-            {/* Main Hero Area */}
-            <MotiView
-              from={{ opacity: 0, translateY: -5 }}
-              animate={{ opacity: 1, translateY: 0 }}
-              transition={{ type: 'timing', duration: 400, delay: 100 }}
-              style={styles.heroMainContent}
-            >
-              {/* Left Content */}
-              <View style={styles.heroLeftCol}>
-                <AppText variant="bodySmall" style={styles.heroGreeting}>
-                  Good morning, {user?.name || 'Arjun'} 👋
-                </AppText>
+            {/* Split Screen Tablet Hero vs Mobile Hero */}
+            {isTablet ? (
+              <MotiView
+                from={{ opacity: 0, translateY: -5 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ type: 'timing', duration: 400, delay: 100 }}
+                style={styles.tabletHeroSplit}
+              >
+                <View style={styles.tabletHeroLeft}>
+                  <AppText variant="bodySmall" style={styles.heroGreeting}>
+                    Good morning, {user?.name || 'Arjun'} 👋
+                  </AppText>
 
-                <AppText
-                  variant="h1"
-                  style={[
-                    styles.heroHeadline,
-                    isTablet && { fontSize: 36, lineHeight: 44 }, // Expanded typography for tablet split-screen header
-                  ]}
+                  <AppText variant="h1" style={[styles.heroHeadline, { fontSize: 42, lineHeight: 50 }]}>
+                    Let's learn{'\n'}something amazing{'\n'}
+                    <AppText variant="h1" style={[{ color: '#FCD34D' }, { fontSize: 42, lineHeight: 50 }]}>today!</AppText>
+                  </AppText>
+
+                  <TouchableOpacity style={[styles.heroStreakPill, { marginBottom: 28 }]} activeOpacity={0.8}>
+                    <View style={styles.heroStreakIconBox}>
+                      <Ionicons name="flame" size={14} color="#FF8A00" />
+                    </View>
+                    <AppText variant="bodySmall" style={styles.heroStreakText}>12 Day Streak</AppText>
+                    <Ionicons name="chevron-forward" size={14} color="rgba(255,255,255,0.6)" />
+                  </TouchableOpacity>
+
+                  <View style={[styles.heroSearchBox, { width: '100%', maxWidth: 450 }]}>
+                    <Ionicons name="search" size={20} color="rgba(255,255,255,0.6)" />
+                    <TextInput
+                      placeholder="Search for courses, skills, topics..."
+                      placeholderTextColor="rgba(255,255,255,0.6)"
+                      style={styles.heroSearchInput}
+                    />
+                    <View style={styles.heroSearchDivider} />
+                    <TouchableOpacity>
+                      <Ionicons name="options-outline" size={20} color="#FFF" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={styles.tabletHeroRight}>
+                  <Image
+                    source={require('../../assets/hero_student.png')}
+                    style={styles.tabletStudentImage}
+                  />
+
+                  <View style={styles.tabletProgressWidget}>
+                    <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.05)']} style={styles.heroProgressInner}>
+                      <View style={styles.heroProgressCircleBg} />
+                      <View style={styles.heroProgressCircleValue} />
+                      <View style={styles.heroProgressTextContainer}>
+                        <AppText variant="h3" style={styles.heroProgressPercent}>72%</AppText>
+                        <AppText variant="caption" style={styles.heroProgressLabel}>Weekly Goal</AppText>
+                      </View>
+                    </LinearGradient>
+                  </View>
+                </View>
+              </MotiView>
+            ) : (
+              <>
+                {/* Main Hero Area (Mobile) */}
+                <MotiView
+                  from={{ opacity: 0, translateY: -5 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  transition={{ type: 'timing', duration: 400, delay: 100 }}
+                  style={styles.heroMainContent}
                 >
-                  Let's learn{'\n'}something amazing{'\n'}
-                  <AppText variant="h1" style={[{ color: '#FCD34D' }, isTablet && { fontSize: 36, lineHeight: 44 }]}>today!</AppText>
-                </AppText>
+                  <View style={styles.heroLeftCol}>
+                    <AppText variant="bodySmall" style={styles.heroGreeting}>
+                      Good morning, {user?.name || 'Arjun'} 👋
+                    </AppText>
 
-                <TouchableOpacity style={styles.heroStreakPill} activeOpacity={0.8}>
-                  <View style={styles.heroStreakIconBox}>
-                    <Ionicons name="flame" size={12} color="#FF8A00" />
+                    <AppText variant="h1" style={styles.heroHeadline}>
+                      Let's learn{'\n'}something amazing{'\n'}
+                      <AppText variant="h1" style={{ color: '#FCD34D' }}>today!</AppText>
+                    </AppText>
+
+                    <TouchableOpacity style={styles.heroStreakPill} activeOpacity={0.8}>
+                      <View style={styles.heroStreakIconBox}>
+                        <Ionicons name="flame" size={12} color="#FF8A00" />
+                      </View>
+                      <AppText variant="bodySmall" style={styles.heroStreakText}>12 Day Streak</AppText>
+                      <Ionicons name="chevron-forward" size={12} color="rgba(255,255,255,0.6)" />
+                    </TouchableOpacity>
                   </View>
-                  <AppText variant="bodySmall" style={styles.heroStreakText}>12 Day Streak</AppText>
-                  <Ionicons name="chevron-forward" size={12} color="rgba(255,255,255,0.6)" />
-                </TouchableOpacity>
-              </View>
-            </MotiView>
+                </MotiView>
 
-            {/* Search Bar & Avatar */}
-            <MotiView
-              from={{ opacity: 0, translateY: 10 }}
-              animate={{ opacity: 1, translateY: 0 }}
-              transition={{ type: 'timing', duration: 400, delay: 150 }}
-              style={styles.heroSearchSection}
-            >
-              {/* Right Graphics perfectly anchored to the search box */}
-              <Image
-                source={require('../../assets/hero_student.png')}
-                style={styles.heroStudentImage}
-              />
+                {/* Search Bar & Avatar (Mobile) */}
+                <MotiView
+                  from={{ opacity: 0, translateY: 10 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  transition={{ type: 'timing', duration: 400, delay: 150 }}
+                  style={styles.heroSearchSection}
+                >
+                  <Image
+                    source={require('../../assets/hero_student.png')}
+                    style={styles.heroStudentImage}
+                  />
 
-              {/* Progress Circle moved here to stick near the student! */}
-              <View style={styles.heroProgressWidget}>
-                <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.05)']} style={styles.heroProgressInner}>
-                  <View style={styles.heroProgressCircleBg} />
-                  <View style={styles.heroProgressCircleValue} />
-                  <View style={styles.heroProgressTextContainer}>
-                    <AppText variant="h3" style={styles.heroProgressPercent}>72%</AppText>
-                    <AppText variant="caption" style={styles.heroProgressLabel}>Weekly Goal</AppText>
+                  <View style={styles.heroProgressWidget}>
+                    <LinearGradient colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.05)']} style={styles.heroProgressInner}>
+                      <View style={styles.heroProgressCircleBg} />
+                      <View style={styles.heroProgressCircleValue} />
+                      <View style={styles.heroProgressTextContainer}>
+                        <AppText variant="h3" style={styles.heroProgressPercent}>72%</AppText>
+                        <AppText variant="caption" style={styles.heroProgressLabel}>Weekly Goal</AppText>
+                      </View>
+                    </LinearGradient>
                   </View>
-                </LinearGradient>
-              </View>
 
-              <View style={styles.heroSearchBox}>
-                <Ionicons name="search" size={20} color="rgba(255,255,255,0.6)" />
-                <TextInput
-                  placeholder="Search for courses, skills, topics..."
-                  placeholderTextColor="rgba(255,255,255,0.6)"
-                  style={styles.heroSearchInput}
-                />
-                <View style={styles.heroSearchDivider} />
-                <TouchableOpacity>
-                  <Ionicons name="options-outline" size={20} color="#FFF" />
-                </TouchableOpacity>
-              </View>
-            </MotiView>
+                  <View style={styles.heroSearchBox}>
+                    <Ionicons name="search" size={20} color="rgba(255,255,255,0.6)" />
+                    <TextInput
+                      placeholder="Search for courses, skills, topics..."
+                      placeholderTextColor="rgba(255,255,255,0.6)"
+                      style={styles.heroSearchInput}
+                    />
+                    <View style={styles.heroSearchDivider} />
+                    <TouchableOpacity>
+                      <Ionicons name="options-outline" size={20} color="#FFF" />
+                    </TouchableOpacity>
+                  </View>
+                </MotiView>
+              </>
+            )}
 
             {/* Quick Links */}
             <MotiView
@@ -653,6 +706,46 @@ const styles = StyleSheet.create({
     marginTop: -2,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+  },
+  tabletHeroSplit: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: 20,
+    zIndex: 2,
+  },
+  tabletHeroLeft: {
+    flex: 1,
+    maxWidth: 500,
+    zIndex: 3,
+  },
+  tabletHeroRight: {
+    position: 'relative',
+    width: 280,
+    height: 280,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  tabletStudentImage: {
+    width: 220,
+    height: 260,
+    resizeMode: 'contain',
+    zIndex: 1,
+  },
+  tabletProgressWidget: {
+    position: 'absolute',
+    left: -20,
+    top: 40,
+    width: 100,
+    height: 100,
+    zIndex: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 6,
   },
   heroSearchSection: {
     paddingHorizontal: Spacing.xl,
